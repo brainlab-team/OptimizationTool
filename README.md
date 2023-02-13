@@ -2,15 +2,15 @@
 python library for models optimization and features selection
 ***
 optimization_tool.py:
-* -d <dataset_path> 
-* -vs <validation_size> 
-* -lo <percentile_low_value> 
-* -hi <percentile_hig_value> 
-* -s <percentile_step_value> 
-* -pd <project_directory_path> 
-* -pn <project_name> 
-* -m <model> 
-* -i <interations> 
-* -r <retest> 
-* -c <configuration_file_path> 
-* -ps <parameters_space_file_path>
+* -d -> dataset path (csv file)
+* -vs -> validation size (float)
+* -lo -> percentile low value (float) 
+* -hi -> percentile high value (float) 
+* -s -> percentile step value (float) 
+* -pd -> project directory path (string) 
+* -pn -> project name (string) 
+* -m -> model name (string)  
+* -i -> cross validation interations (int) 
+* -r -> retest (boolean) 
+* -c -> configuration file path (json file) 
+* -ps -> parameters space file path (json file)
