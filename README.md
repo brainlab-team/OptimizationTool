@@ -16,4 +16,4 @@ optimization_tool.py:
 * -ps -> parameters space file path (json file)
 ***
 The row of the dataset must have the following structure: char1, char2,.......,charN, label, subject_index.
-where 'subject_index' is an integer index that associates the data to the subject/experiment that produced it.
+'subject_index' is an integer index that associates the data to the subject/experiment that produced it.
