@@ -1,3 +1,0 @@
-percentile,accuracy,avg_precision,avg_recall,avg_f1_score,precision_0,recall_0,f1_score_0,precision_1,recall_1,f1_score_1,prediction_time (s)
-5,0.8745,0.89092,0.8745,0.8719,0.888,0.8702,0.8659,0.8938,0.8787,0.8779,3.4e-05
-10,0.8259,0.84363,0.8259,0.8176,0.8379,0.8029,0.8015,0.8494,0.8489,0.8337,4.1e-05

@@ -1,3 +1,0 @@
-percentile,C,kernel,shrinking,tol
-5,1,linear,True,0.01
-10,0.1,linear,True,0.0001
