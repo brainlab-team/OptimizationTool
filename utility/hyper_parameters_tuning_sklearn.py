@@ -1,4 +1,4 @@
-from predictive_models import *
+from utility.predictive_models import *
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import LeaveOneGroupOut

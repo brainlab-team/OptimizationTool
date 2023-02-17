@@ -6,7 +6,7 @@ from scipy.signal import butter, lfilter
 from numpy import var, std,  mean
 from math import sqrt
 from scipy.fft import fft
-import functions as signal
+from utility import functions as signal
 from utility import mat as m
 import csv
 from math import log

@@ -1,7 +1,7 @@
 from tensorflow import keras
 import keras_tuner as kt
-import predictive_models
-from predictive_models import *
+from utility import predictive_models
+from utility.predictive_models import *
 import os
 ########################################################################################################################
 ########################################################################################################################

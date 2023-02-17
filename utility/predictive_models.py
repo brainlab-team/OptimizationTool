@@ -5,35 +5,28 @@ import os
 import json
 from statistics import mean, stdev
 import keras.models
-import sklearn
 import copy
 import pandas as pd
 import random
 import time
-from math import log
 import numpy as np
-from numpy import array
 from sklearn import svm
 from sklearn.model_selection import train_test_split as split
-from sklearn import tree
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay
 from sklearn.feature_selection import SelectKBest, SelectFromModel, SelectPercentile
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import f_classif
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.models import load_model
+from keras.layers import Dense, Dropout
 from matplotlib import pyplot as plt
 from sklearn.tree import DecisionTreeClassifier  # Import Decision Tree Classifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics  # Import scikit-learn metrics module for accuracy calculation
-from hyper_parameters_tuning_keras import keras_model_optimization, model_builder
-from hyper_parameters_tuning_sklearn import sklearn_model_optimization
-import labels_generator
-from functions import scientific_notation
+from utility.hyper_parameters_tuning_keras import keras_model_optimization, model_builder
+from utility.hyper_parameters_tuning_sklearn import sklearn_model_optimization
+from utility.functions import scientific_notation
 ##############################################################################################
 ##############################################################################################
 
@@ -1213,7 +1206,7 @@ def features_selection_from_score_function(Xtrain, ytrain, Xval=[], Xtest=[], pe
     pvalues = selector.pvalues_
     newXtrain = selector.transform(Xtrain)
     # Mask feature names according to selected features.
-    selected_features_names = selector.get_feature_names_out(labels_generator.labels)
+    selected_features_names = selector.get_feature_names_out(json.load(open(f"{os.getcwd()}//config.json", "r"))["features_labels"])
 
     # Get parameters for this estimator.
     #selector.get_params()
