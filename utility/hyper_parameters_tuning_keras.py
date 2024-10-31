@@ -3,9 +3,6 @@ import keras_tuner as kt
 from utility import predictive_models
 from utility.predictive_models import *
 import os
-########################################################################################################################
-########################################################################################################################
-
 
 def model_builder(hp):
 
@@ -48,8 +45,6 @@ def model_builder(hp):
                     metrics=['accuracy'])
 
   return model
-########################################################################################################################
-
 
 def keras_model_optimization(Xtrain, ytrain, Xval, yval, Xtest, ytest, input_shape, model_builders, model_names):
 
@@ -186,9 +181,6 @@ def keras_model_optimization(Xtrain, ytrain, Xval, yval, Xtest, ytest, input_sha
                           'optimization_time': optimization_time}
 
     return result
-########################################################################################################################
-########################################################################################################################
-
 
 if __name__ == "__main__":
 

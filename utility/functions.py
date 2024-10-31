@@ -1,5 +1,3 @@
-###############################################################
-###############################################################
 from scipy.signal import freqz
 import copy
 from scipy.signal import butter, lfilter
@@ -13,9 +11,6 @@ from math import log
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import periodogram, welch
-###############################################################
-###############################################################
-
 
 def integ(x,y,amp_step):
     sum=0
@@ -24,8 +19,6 @@ def integ(x,y,amp_step):
             hmean=(y[amp_step*i]+y[amp_step*(i-1)])/2
             sum+=(x[amp_step*i]-x[amp_step*(i-1)])*hmean
     return sum
-###############################################################
-
 
 def statistic(x,y):
 
@@ -42,8 +35,6 @@ def statistic(x,y):
     power=integ(x,y,amp_step=1)
 
     return power,root_mean_square,Mean,variance,Std
-###############################################################
-
 
 def segment(y,amp,sovr):
     step=amp*128
@@ -53,15 +44,11 @@ def segment(y,amp,sovr):
         if (index+step<len(y)):
             new_x.append(y[index:index+step])
     return new_x
-###############################################################
-
 
 def butter_highpass_filter(data, order=5):
     b, a = butter(order, 0.16, btype='highpass')
     y = lfilter(b, a, data)
     return y
-###############################################################
-
 
 def iir_filter(data, ns):
     IIR_TC = 256
@@ -70,8 +57,6 @@ def iir_filter(data, ns):
         back = (back * (IIR_TC-1) + data[i]) / IIR_TC
         data[i] = data[i] - back
     return data
-###############################################################
-
 
 def scientific_notation(number):
     if number < 1:
@@ -93,8 +78,6 @@ def scientific_notation(number):
         return number, cnt
 
     return number, 1
-###############################################################
-
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
        nyq = 0.5 * fs
@@ -102,15 +85,11 @@ def butter_bandpass(lowcut, highcut, fs, order=5):
        high = highcut / nyq
        b, a = butter(order, [low, high], btype='band')
        return b, a
-###############################################################
-
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
        b, a = butter_bandpass(lowcut, highcut, fs, order=order)
        y = lfilter(b, a, data)
        return y
-###############################################################
-
 
 def box_plot(result, channel_list, bands, show=False):
 
@@ -198,8 +177,6 @@ def box_plot(result, channel_list, bands, show=False):
         plts.append(plt)
 
     return plts
-###############################################################
-
 
 def from_dataset_to_csv(dataset,file_path):
 
@@ -212,8 +189,6 @@ def from_dataset_to_csv(dataset,file_path):
     f.close()
 
     return None
-###############################################################
-
 
 def from_dicts_to_csv(metrics_dicts, labels, file_path):
 
@@ -234,7 +209,7 @@ def from_dicts_to_csv(metrics_dicts, labels, file_path):
     f.close()
 
     return None
-###############################################################
+
 def PSD(signal, fs=1.0, plot=False):
 
     """
@@ -257,7 +232,6 @@ def PSD(signal, fs=1.0, plot=False):
         plt.show()
 
     return freq, signalpsd
-###############################################################
 
 def filter_and_process(dataset, channel_list, array=True):
     # Filter and process a noisy signal.
@@ -287,8 +261,6 @@ def filter_and_process(dataset, channel_list, array=True):
         filter_signals = np.reshape(filter_signals, [len(filter_signals), len(filter_signals[0])])
 
     return filter_signals
-###############################################################
-
 
 def bands_separation(signals, bands, fs):
 
@@ -305,8 +277,6 @@ def bands_separation(signals, bands, fs):
                     element.append(band_signal)
 
     return bands_signals
-###############################################################
-
 
 def raw_data_from_csv(file_path, temporal_range, channel_list=None):
 
@@ -361,7 +331,6 @@ def raw_data_from_csv(file_path, temporal_range, channel_list=None):
     transp_signals = np.transpose(transp_signals)
 
     return signals, transp_signals
-###############################################################
 
 def from_energy_to_power(bands_energy):
 
@@ -393,8 +362,6 @@ def from_energy_to_power(bands_energy):
                 nseg = len(bands_power[i][j])
 
     return bands_power, nseg
-###############################################################
-
 
 def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands, time_intervals, targets, asymmetry=False):
 
@@ -432,6 +399,7 @@ def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands
             for l in range(len(bands_power[i][j])):
                 result[i][j][0].append(bands_power[i][j][l][0])
                 result[i][j][1].append(bands_power[i][j][l][2])
+
     #####################################################################################################################
     ####################################AGGIUNGO CARATTERISTICHE ASIMMETRIA##############################################
 
@@ -456,6 +424,7 @@ def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands
             a4 = (beta_AF7 + beta_AF8) / (alfa_AF7 + alfa_AF8)
 
             data_complete[i].extend([v1, v2, v3, v4, a1, a2, a3, a4])
+
     #####################################################################################################################
     ############################################ETICHETTATURA DEI DATI###################################################
 
@@ -482,8 +451,10 @@ def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands
                 if (targets[i] == '1'):
                     result[j][k + 1][4].extend(result[j][k + 1][0][indexl:indexh])
                     result[j][k + 1][5].extend(result[j][k + 1][1][indexl:indexh])
+
     #####################################################################################################################
     ##########################AGGIUNGO ETICHETTE PER DATASET ADDESTRAMENTO E VALIDAZIONE DELLA RETE######################
+
         print(len(data_complete))
         print(indexl, indexh)
         if targets[i] == '0':
@@ -494,10 +465,9 @@ def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands
             for index in range(indexl, indexh):
                 data_complete[index].append(1)  # datasetcompleto
                 dataset_complete.append(data_complete[index])  # datasetcompleto
-    #####################################################################################################################
 
     return dataset_complete, result
-###############################################################
+
 """
 def from_signals_to_dataset(bands_energy, bands_power, nseg, channel_list, bands, asymmetry=False):
 
@@ -615,8 +585,6 @@ plt.ylabel('PSD [V**2/Hz]')
 plt.grid()
 plt.show()
 """
-###############################################################
-
 
 def signal_plot(y_values, x_label, y_label, title, start_time, stop_time, output_path):
 
@@ -659,8 +627,6 @@ def signal_plot_confronto(first_y_values, second_y_values, x_label, y_label, tit
     plt.close()
 
     return plt
-###############################################################
-
 
 def psd_plot(y_values, x_label='frequency [Hz]', y_label='PSD [V**2/Hz]', title="Power Spectral Density", fs=128, output_path=""):
 
@@ -674,11 +640,10 @@ def psd_plot(y_values, x_label='frequency [Hz]', y_label='PSD [V**2/Hz]', title=
     plt.savefig(output_path)
     plt.close()
     return plt
-###############################################################
-
 
 # dimostrazione applicazione filtro passabanda su segnale costruito con funzioni sinusoidali
 # verifica dell'efficacia dell'ordine utilizzato per il filtro passabanda
+
 if __name__ == "__main__":
 
        # Sample rate and desired cutoff frequencies (in Hz).
@@ -702,11 +667,9 @@ if __name__ == "__main__":
        plt.legend(loc='best')
 
        # Filter a noisy signal.
-##########################################################
        T = 1.0
        nsamples = T * fs
        t = np.linspace(0, T, int(nsamples), endpoint=False)
-##########################################################
        #a = 0.02
        #f0 = 600.0
        x = 0.1 * np.sin(2 * np.pi * 2.5 * t)
@@ -714,7 +677,7 @@ if __name__ == "__main__":
        x += 0.03 * np.cos(2 * np.pi * 10.0 * t)
        x += 0.02 * np.cos(2 * np.pi * 20.0 * t)
        x += 0.01 * np.cos(2 * np.pi * 40.0 * t)
-##########################################################
+
        plt.figure(2)
        plt.clf()
        plt.plot(t, x, label='Noisy signal')
@@ -735,5 +698,3 @@ if __name__ == "__main__":
        plt.legend(loc='upper left')
        print(x)
        plt.show()
-###############################################################
-###############################################################

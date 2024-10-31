@@ -1,5 +1,3 @@
-##############################################################################################
-##############################################################################################
 import csv
 import os
 import json
@@ -27,9 +25,6 @@ from sklearn import metrics  # Import scikit-learn metrics module for accuracy c
 from utility.hyper_parameters_tuning_keras import keras_model_optimization, model_builder
 from utility.hyper_parameters_tuning_sklearn import sklearn_model_optimization
 from utility.functions import scientific_notation
-##############################################################################################
-##############################################################################################
-
 
 def get_dataset_from_csv(csv_file_path, test_subjects, validation_size, exclude_from_training=tuple()):
 
@@ -91,8 +86,6 @@ def get_dataset_from_csv(csv_file_path, test_subjects, validation_size, exclude_
     return {'Xtrain': Xtrain, 'Xval': Xvalidation, 'Xtest': Xtest,
             'ytrain': ytrain, 'yval': yvalidation, 'ytest': ytest,
             'groups': groups}
-##############################################################################################
-
 
 def label_separation(dataset):
     labelset = []
@@ -102,8 +95,6 @@ def label_separation(dataset):
         dataset[i] = dataset[i][:len(dataset[i]) - 1]
 
     return dataset, labelset
-######################################################################################
-
 
 def shuffle(X, Y):
 
@@ -125,8 +116,6 @@ def shuffle(X, Y):
     new_Y = np.array(new_Y)
 
     return new_X, new_Y
-######################################################################################
-
 
 def split_by_subjects(X, test_subjects, validation_size=0.3, balancing_train=False, balancing_test=False, shuffle=False,
                       exclude_from_training=()):
@@ -209,8 +198,6 @@ def split_by_subjects(X, test_subjects, validation_size=0.3, balancing_train=Fal
         Xtest[i] = Xtest[i][:-1]
 
     return {"Xtrain": Xtrain, "Xvalidation": Xvalidation, "Xtest": Xtest, "groups": groups}
-######################################################################################
-
 
 def NN_plot(history, test_scores=None, image_file_path=None):
 
@@ -253,16 +240,12 @@ def NN_plot(history, test_scores=None, image_file_path=None):
     plt.close()
 
     return plt
-##############################################################################################
-
 
 def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, class_labels=None):
 
     model_key = list(experiments.keys())[0]
 
     x = experiments['steps']
-
-    ####################################################################################################################
     accuracy_values = dict()
     precision = dict()
     recall = dict()
@@ -284,52 +267,38 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
     precision_class_1['total'] = dict()
     recall_class_1['total'] = dict()
     f1_score_class_1['total'] = dict()
-    ####################################################################################################################
     # print(experiments)
 
     for experiment in experiments[model_key]:
-        ################################################################################################################
         if 'percentile' in experiment:
             x_value = experiment['percentile']
         elif 'threshold' in experiment:
             x_value = experiment['threshold']
-        ################################################################################################################
         if f'{x_value}' not in accuracy_values['total']:
             accuracy_values['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in precision['total']:
             precision['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in recall['total']:
             recall['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in f1_score['total']:
             f1_score['total'][f'{x_value}'] = list()
-        ################################################################################################################
         if f'{x_value}' not in precision_class_0['total']:
             precision_class_0['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in recall_class_0['total']:
             recall_class_0['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in f1_score_class_0['total']:
             f1_score_class_0['total'][f'{x_value}'] = list()
-        ################################################################################################################
         if f'{x_value}' not in precision_class_1['total']:
             precision_class_1['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in recall_class_1['total']:
             recall_class_1['total'][f'{x_value}'] = list()
-
         if f'{x_value}' not in f1_score_class_1['total']:
             f1_score_class_1['total'][f'{x_value}'] = list()
-        ################################################################################################################
-
+        
         for report in experiment['report']:
             group = report['group']
             key = f'{group}'
 
-            ############################################################################################################
             if key not in accuracy_values:
                 accuracy_values[f'{group}'] = dict()
                 accuracy_values[f'{group}'][f'{x_value}'] = list()
@@ -340,7 +309,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     accuracy_values[f'{group}'][f'{x_value}'] = list()
                 accuracy_values[f'{group}'][f'{x_value}'].append(report['report']['accuracy'])
                 accuracy_values['total'][f'{x_value}'].append(report['report']['accuracy'])
-            ############################################################################################################
             if key not in precision:
                 precision[f'{group}'] = dict()
                 precision[f'{group}'][f'{x_value}'] = list()
@@ -351,7 +319,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     precision[f'{group}'][f'{x_value}'] = list()
                 precision[f'{group}'][f'{x_value}'].append(report['report']['macro avg']['precision'])
                 precision['total'][f'{x_value}'].append(report['report']['macro avg']['precision'])
-            ############################################################################################################
             if key not in recall:
                 recall[f'{group}'] = dict()
                 recall[f'{group}'][f'{x_value}'] = list()
@@ -362,7 +329,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     recall[f'{group}'][f'{x_value}'] = list()
                 recall[f'{group}'][f'{x_value}'].append(report['report']['macro avg']['recall'])
                 recall['total'][f'{x_value}'].append(report['report']['macro avg']['recall'])
-            ############################################################################################################
             if key not in f1_score:
                 f1_score[f'{group}'] = dict()
                 f1_score[f'{group}'][f'{x_value}'] = list()
@@ -373,7 +339,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     f1_score[f'{group}'][f'{x_value}'] = list()
                 f1_score[f'{group}'][f'{x_value}'].append(report['report']['macro avg']['f1-score'])
                 f1_score['total'][f'{x_value}'].append(report['report']['macro avg']['f1-score'])
-            ############################################################################################################
             if key not in precision_class_0:
                 precision_class_0[f'{group}'] = dict()
                 precision_class_0[f'{group}'][f'{x_value}'] = list()
@@ -384,7 +349,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     precision_class_0[f'{group}'][f'{x_value}'] = list()
                 precision_class_0[f'{group}'][f'{x_value}'].append(report['report'][class_labels[0]]['precision'])
                 precision_class_0['total'][f'{x_value}'] .append(report['report'][class_labels[0]]['precision'])
-            ############################################################################################################
             if key not in recall_class_0:
                 recall_class_0[f'{group}'] = dict()
                 recall_class_0[f'{group}'][f'{x_value}'] = list()
@@ -395,7 +359,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     recall_class_0[f'{group}'][f'{x_value}'] = list()
                 recall_class_0[f'{group}'][f'{x_value}'].append(report['report'][class_labels[0]]['recall'])
                 recall_class_0['total'][f'{x_value}'] .append(report['report'][class_labels[0]]['recall'])
-            ############################################################################################################
             if key not in f1_score_class_0:
                 f1_score_class_0[f'{group}'] = dict()
                 f1_score_class_0[f'{group}'][f'{x_value}'] = list()
@@ -406,7 +369,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     f1_score_class_0[f'{group}'][f'{x_value}'] = list()
                 f1_score_class_0[f'{group}'][f'{x_value}'].append(report['report'][class_labels[0]]['f1-score'])
                 f1_score_class_0['total'][f'{x_value}'] .append(report['report'][class_labels[0]]['f1-score'])
-            ############################################################################################################
             if key not in precision_class_1:
                 precision_class_1[f'{group}'] = dict()
                 precision_class_1[f'{group}'][f'{x_value}'] = list()
@@ -417,7 +379,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     precision_class_1[f'{group}'][f'{x_value}'] = list()
                 precision_class_1[f'{group}'][f'{x_value}'].append(report['report'][class_labels[1]]['precision'])
                 precision_class_1['total'][f'{x_value}'] .append(report['report'][class_labels[1]]['precision'])
-            ############################################################################################################
             if key not in recall_class_1:
                 recall_class_1[f'{group}'] = dict()
                 recall_class_1[f'{group}'][f'{x_value}'] = list()
@@ -428,7 +389,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     recall_class_1[f'{group}'][f'{x_value}'] = list()
                 recall_class_1[f'{group}'][f'{x_value}'].append(report['report'][class_labels[1]]['recall'])
                 recall_class_1['total'][f'{x_value}'] .append(report['report'][class_labels[1]]['recall'])
-            ############################################################################################################
             if key not in f1_score_class_1:
                 f1_score_class_1[f'{group}'] = dict()
                 f1_score_class_1[f'{group}'][f'{x_value}'] = list()
@@ -439,9 +399,7 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
                     f1_score_class_1[f'{group}'][f'{x_value}'] = list()
                 f1_score_class_1[f'{group}'][f'{x_value}'].append(report['report'][class_labels[1]]['f1-score'])
                 f1_score_class_1['total'][f'{x_value}'] .append(report['report'][class_labels[1]]['f1-score'])
-            ############################################################################################################
-
-    ####################################################################################################################
+            
     average_accuracy_values = list()
     average_precision = list()
     average_recall = list()
@@ -544,8 +502,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
         recall_class_1_per_test[key] = np.array(recall_class_1_per_test[key])
         f1_score_class_1_per_test[key] = np.array(f1_score_class_1_per_test[key])
 
-    ####################################################################################################################
-
     table_labels = ['percentile', 'accuracy', 'avg_precision', 'avg_recall', 'avg_f1_score', 'precision_0', 'recall_0',
                     'f1_score_0', 'precision_1', 'recall_1', 'f1_score_1', 'prediction_time (s)']
 
@@ -587,7 +543,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
     import dataframe_image as dfi
     dfi.export(df, f"{images_files_path}/metrics_table.png")
 
-    ####################################################################################################################
     table_labels = ['percentile']
     for key in experiments[model_key][0]['best_params']:
         table_labels.append(key)
@@ -620,8 +575,7 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
     print(df)
 
     dfi.export(df, f"{images_files_path}/params_table.png")
-    ####################################################################################################################
-
+    
     files_list = os.listdir("features_selection_and_optimization/all_models")
 
     if "best_results.json" in files_list:
@@ -639,7 +593,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
     with open("features_selection_and_optimization/all_models/best_results.json", "w") as outfile:
         json.dump(results, outfile)
 
-    ####################################################################################################################
     y = list()
 
     #for x_value in x:
@@ -791,8 +744,6 @@ def plot_metrics_vs_selected_features(experiments, images_files_path, x_label, c
     plt.close()
 
     return None
-##############################################################################################
-
 
 def plot_time_resource_vs_selected_features(experiments, image_file_path, x_label):
 
@@ -843,8 +794,6 @@ def plot_time_resource_vs_selected_features(experiments, image_file_path, x_labe
     plt.close()
 
     return None
-##############################################################################################
-
 
 def svm_from_params_dict(Xtrain, ytrain, Xtest, ytest, params_dict=None):
 
@@ -896,8 +845,6 @@ def svm_from_params_dict(Xtrain, ytrain, Xtest, ytest, params_dict=None):
 
     return {'model': model, 'accuracy': score, 'report': report, 'training_time': training_time,
             'prediction_time': prediction_time, 'predictions': predictions}
-##############################################################################################
-
 
 def tree_from_params_dict(Xtrain, Xtest, ytrain, ytest, params_dict=None, image_file_path=None):
 
@@ -955,8 +902,6 @@ def tree_from_params_dict(Xtrain, Xtest, ytrain, ytest, params_dict=None, image_
     """
     return {'model': model, 'accuracy': score, 'report': report, 'training_time': training_time,
             'prediction_time': prediction_time, 'predictions': predictions}
-################################################################################################
-
 
 def knn_from_params_dict(Xtrain, Xtest, ytrain, ytest, params_dict=None):
 
@@ -995,8 +940,6 @@ def knn_from_params_dict(Xtrain, Xtest, ytrain, ytest, params_dict=None):
 
     return {'model': model, 'accuracy': score, 'report': report, 'training_time': training_time,
             'prediction_time': prediction_time, 'predictions': predictions}
-################################################################################################
-
 
 def random_forest_from_params_dict(Xtrain,Xtest,ytrain,ytest, params_dict=None):
 
@@ -1037,8 +980,6 @@ def random_forest_from_params_dict(Xtrain,Xtest,ytrain,ytest, params_dict=None):
 
     return {'model': model, 'accuracy': score, 'report': report, 'training_time': training_time,
             'prediction_time': prediction_time, 'predictions': predictions}
-################################################################################################
-
 
 def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, callbacks, params_dict,
                   image_file_path=None, model_checkpoint_dir=None, best_models_path=None, verbose=1):
@@ -1063,10 +1004,8 @@ def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, 
         model.add(Dense(1, activation=params_dict['activation_functions'][-1]))
     if params_dict['activation_functions'][-1] == 'softmax':
         model.add(Dense(2, activation=params_dict['activation_functions'][-1]))
-    ####################################################################################################################
 
     # compile
-    ####################################################################################################################
     if params_dict['optimizer'] == "adam":
         opt = tf.keras.optimizers.Adam(learning_rate=params_dict['learning_rate'])
 
@@ -1080,17 +1019,12 @@ def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, 
     if params_dict['activation_functions'][-1] == 'softmax':
         model.compile(loss='sparse_categorical_crossentropy', optimizer=opt,
                       metrics=['accuracy'])
-    ####################################################################################################################
-
+    
     # show model parameters
-    ####################################################################################################################
     print()
     print(model.summary())
     print()
-    ####################################################################################################################
-
     # addestramento
-    ####################################################################################################################
     model_checkpoint = tf.keras.callbacks.ModelCheckpoint(f'{model_checkpoint_dir}/model_epoch_' + '{epoch:02d}.h5',
                                                           monitor="val_loss", verbose=0, save_best_only=False,
                                                           save_weights_only=False, mode="auto", save_freq="epoch",
@@ -1106,9 +1040,6 @@ def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, 
     stop_training_time = time.time()
 
     training_time = stop_training_time - start_training_time
-    ####################################################################################################################
-
-    ####################################################################################################################
     test_scores = {'test_loss': [], 'test_accuracy': []}
     models_names = os.listdir(model_checkpoint_dir)
 
@@ -1119,7 +1050,6 @@ def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, 
                 score = model.evaluate(Xtest, ytest, verbose=0)
                 test_scores['test_loss'].append(score[0])
                 test_scores['test_accuracy'].append(score[1])
-    ####################################################################################################################
 
     best_epoch = np.array(test_scores['test_accuracy']).argmax() + 1
 
@@ -1135,7 +1065,6 @@ def MLP_from_dict(Xtrain, Xval, Xtest, ytrain, yval, ytest, batch_size, epochs, 
         os.remove(f"{model_checkpoint_dir}/{model_name}")
 
     # compute the time test
-    ####################################################################################################################
     start_prediction_time = time.time()
     predictions = best_model.predict(Xtest, batch_size=batch_size)
     stop_prediction_time = time.time()

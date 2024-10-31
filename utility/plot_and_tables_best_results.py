@@ -83,7 +83,6 @@ plt.savefig("features_selection_and_optimization/all_models/delta_precision_vs_p
 
 plt.close()
 
-########################################################################################################################
 column_labels = ['percentile', 'accuracy', 'avg_precision', 'avg_recall', 'avg_f1_score', 'precision_0', 'recall_0',
           'f1_score_0', 'precision_1', 'recall_1', 'f1_score_1', 'prediction_time (s)']
 
@@ -121,8 +120,5 @@ best_metrics_table_to_image = np.array(best_metrics_table_to_image)
 
 df = pd.DataFrame(best_metrics_table_to_image, index=index_labels, columns=column_labels)
 
-import dataframe_image as dfi
-
-dfi.export(df, "features_selection_and_optimization/all_models/best_models_metrics_table.png")
-########################################################################################################################
-
+#import dataframe_image as dfi
+#dfi.export(df, "features_selection_and_optimization/all_models/best_models_metrics_table.png")
