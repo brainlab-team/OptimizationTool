@@ -1155,8 +1155,6 @@ def features_selection_from_score_function(Xtrain, ytrain, Xval=[], Xtest=[], pe
 
     return {'selector': selector, 'scores': scores, 'pvalues': pvalues, 'transformed_Xtrain': newXtrain,
             'transformed_Xval': newXval, 'transformed_Xtest': newXtest, 'selected_features_names': selected_features_names}
-##############################################################################################
-
 
 def features_selection_and_model_optimization(csv_file_path, test_subjects, validation_size, custom_steps=None,
                                               low_value=5, high_value=105, step=5,
@@ -1165,7 +1163,6 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                               model_type=None, train_and_test_n_iteration=1, retest=False,
                                               class_labels=None, parameters=None):
 
-    ####################################################################################################################
     try:
         os.mkdir(project_dir)
     except FileExistsError:
@@ -1182,9 +1179,7 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
         os.mkdir(project_dir + '/' + model_type + '/' + project_name + '/' + 'confusion_matrix_plots')
     except FileExistsError:
         pass
-    ####################################################################################################################
-
-    ####################################################################################################################
+    
     model_files = os.listdir(f"features_selection_and_optimization/{model_type}/{project_name}")
     if 'experiments.json' in model_files:
         json_file = json.load(open(f"features_selection_and_optimization/{model_type}/{project_name}/experiments.json"))
@@ -1198,9 +1193,7 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
         range_ = list(np.arange(low_value, high_value, step))
     elif custom_steps:
         range_ = custom_steps
-    ####################################################################################################################
-
-    ####################################################################################################################
+    
     dataset = get_dataset_from_csv(csv_file_path, [], 0.0)
 
     Xtrain = dataset['Xtrain']
@@ -1216,8 +1209,7 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
         range_.append(best_threshold)
 
     range_.sort()
-    ####################################################################################################################
-
+    
     for value in range_:
 
         if not retest and value in steps:
@@ -1284,7 +1276,6 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
             test_y_pred = list()
             test_y_true = list()
 
-            ############################################################################################################
             dataset = get_dataset_from_csv(csv_file_path, [test_subject], validation_size)
 
             transformed_Xtrain = selector.transform(dataset['Xtrain'])
@@ -1308,11 +1299,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
             print(f"[INFO] data_shape: train = {transformed_Xtrain.shape}, test = {transformed_Xtest.shape}, test out = {transformed_Xtest_out.shape}")
             print(f"[INFO] label_shape: train = {transformed_ytrain.shape}, test = {transformed_ytest.shape}test out = {transformed_ytest_out.shape}")
             print()
-            ############################################################################################################
-
+            
             if model_type.split("_")[0] == "SVM":
 
-                ########################################################################################################
                 if test_subjects.index(test_subject) == 0:
 
                     if value not in steps:
@@ -1337,12 +1326,10 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                 optimization_result['optimization_time'] = exp['optimization_time']
 
                     experiment['best_params'] = optimization_result['best_params']
-                ########################################################################################################
-
+            
                 print('-' * 500 + '\n')
                 print(f"[INFO] test on group {test_subject} \n")
 
-                ########################################################################################################
                 score = 0
 
                 for train_and_test_index in range(train_and_test_n_iteration):
@@ -1368,11 +1355,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                 plt.close()
 
                 score = score / train_and_test_n_iteration
-                ########################################################################################################
-
+                
             elif model_type == "DECISION_TREE":
 
-                ########################################################################################################
                 if test_subjects.index(test_subject) == 0:
 
                     if value not in steps:
@@ -1396,12 +1381,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                 optimization_result['optimization_time'] = exp['optimization_time']
 
                     experiment['best_params'] = optimization_result['best_params']
-                ########################################################################################################
-
+                
                 print('-' * 500 + '\n')
                 print(f"[INFO] test on group {test_subject} \n")
-
-                ########################################################################################################
 
                 try:
                     os.mkdir(
@@ -1450,11 +1432,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                 plt.close()
 
                 score = score / train_and_test_n_iteration
-                ########################################################################################################
-
+                
             elif model_type == "RANDOM_FOREST":
 
-                ########################################################################################################
                 if test_subjects.index(test_subject) == 0:
 
                     if value not in steps:
@@ -1478,12 +1458,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                 optimization_result['optimization_time'] = exp['optimization_time']
 
                     experiment['best_params'] = optimization_result['best_params']
-                ########################################################################################################
-
+                
                 print('-' * 500 + '\n')
                 print(f"[INFO] test on group {test_subject} \n")
-
-                ########################################################################################################
 
                 score = 0
 
@@ -1511,11 +1488,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                 plt.close()
 
                 score = score / train_and_test_n_iteration
-                ########################################################################################################
-
+                
             elif model_type == "KNN":
 
-                ########################################################################################################
                 if test_subjects.index(test_subject) == 0:
 
                     if value not in steps:
@@ -1539,12 +1514,10 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                 optimization_result['optimization_time'] = exp['optimization_time']
 
                     experiment['best_params'] = optimization_result['best_params']
-                ########################################################################################################
-
+                
                 print('-' * 500 + '\n')
                 print(f"[INFO] test on group {test_subject} \n")
 
-                ########################################################################################################
                 score = 0
 
                 for train_and_test_index in range(train_and_test_n_iteration):
@@ -1571,11 +1544,9 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                 plt.close()
 
                 score = score / train_and_test_n_iteration
-                ########################################################################################################
-
+                
             elif 'MLP' in model_type:
 
-                ########################################################################################################
                 if test_subjects.index(test_subject) == 0:
 
                     if value not in steps:
@@ -1612,12 +1583,10 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
 
                     experiment['best_params'] = optimization_result['best_params']
                     experiment['batch_size'] = optimization_result['batch_size']
-                ########################################################################################################
-
+            
                 print('-' * 500 + '\n')
                 print(f"[INFO] test on group {test_subject} \n")
 
-                ########################################################################################################
                 stop_early_loss = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
                 stop_early_accuracy = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=10)
 
@@ -1719,8 +1688,7 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
 
                 score[0] = score[0] / train_and_test_n_iteration
                 score[1] = score[1] / train_and_test_n_iteration
-                ########################################################################################################
-
+                
             total_y_pred.extend(test_y_pred)
             total_y_true.extend(test_y_true)
 
@@ -1730,7 +1698,6 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
             else:
                 average_score += score
 
-        ################################################################################################################
         try:
             os.mkdir(
                 project_dir + '/' + model_type + '/' + project_name + '/' + 'confusion_matrix_plots' + '/' + 'on_total')
@@ -1746,8 +1713,7 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                     f'on_total' + '/' + f'confusion_matrix_on_value_{value}.png')
 
         plt.close()
-        ################################################################################################################
-
+        
         experiment['optimization_time'] = optimization_result['optimization_time']
         experiment['training_time'] = train_and_test_result['training_time']
         experiment['prediction_time'] = train_and_test_result['prediction_time']
@@ -1781,15 +1747,10 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
             steps.append(value)
             steps.sort()
 
-
-        ################################################################################################################
         data = {f'{model_type}': experiments, 'steps': steps}
 
         with open(f"{project_dir}/{model_type}/{project_name}/experiments.json", "w") as outfile:
             json.dump(data, outfile)
-        ################################################################################################################
-        
-        ################################################################################################################
         if project_dir and feature_selection_type == 'from_model':
             plot_metrics_vs_selected_features(data, project_dir + '/' + model_type + '/' + project_name,
                                               x_label='threshold', class_labels=class_labels)
@@ -1800,16 +1761,12 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                               x_label='percentile', class_labels=class_labels)
             plot_time_resource_vs_selected_features(data, project_dir + '/' + model_type + '/' + project_name,
                                                     x_label='percentile')
-        ################################################################################################################
+        
+        data = {f'{model_type}': experiments, 'steps': steps}
 
-    ###########
-    # #########################################################################################################
-    data = {f'{model_type}': experiments, 'steps': steps}
     with open(f"{project_dir}/{model_type}/{project_name}/experiments.json", "w") as outfile:
         json.dump(data, outfile)
-    ####################################################################################################################
-
-    ####################################################################################################################
+    
     if project_dir and feature_selection_type == 'from_model':
         plot_metrics_vs_selected_features(data, project_dir + '/' + model_type + '/' + project_name,
                                           x_label='threshold', class_labels=class_labels)
@@ -1820,8 +1777,6 @@ def features_selection_and_model_optimization(csv_file_path, test_subjects, vali
                                           x_label='percentile', class_labels=class_labels)
         plot_time_resource_vs_selected_features(data, project_dir + '/' + model_type + '/' + project_name,
                                                 x_label='percentile')
-    ####################################################################################################################
-
     return experiments
 
 

@@ -1,7 +1,5 @@
-#############################################################################################
 from utility.predictive_models import *
 import argparse
-##############################################################################################
 
 # python3 optimization_tool.py -d dataset_norm/dataset.csv -vs 0.0 -lo 5 -hi 15 -s 5 -pd features_selection_and_optimization -pn SVM_linear_svc -m SVM_linear_svc -i 2 -r True -c config.json -ps optimization_space.json
 # construct the argument parse and parse the arguments
@@ -50,7 +48,6 @@ try:
 except FileExistsError:
     pass
 
-##############################################################################################
 # select the best models and graph the test accuracy value as the number of characteristics changes
 
 result = features_selection_and_model_optimization(csv_file_path=args["dataset"],
